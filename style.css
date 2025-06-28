@@ -1,0 +1,266 @@
+/* Sets up variables for easy color changes later. */
+:root {
+    --primary-color: #3498db; /* A slightly softer blue */
+    --primary-dark: #2980b9; /* Darker blue for hover/active states */
+    --secondary-color: #2ecc71; /* Green for accents, e.g., success messages */
+    --text-dark: #34495e; /* Darker grey-blue for main text */
+    --text-light: #ecf0f1; /* Light grey for text on dark backgrounds */
+    --bg-light: #f8f9fa; /* Very light grey background */
+    --bg-card: #ffffff; /* White for card backgrounds */
+    --border-color: #e0e0e0; /* Light border color */
+    --shadow-light: rgba(0, 0, 0, 0.08); /* Subtle shadow */
+    --font-family: 'Poppins', sans-serif; /* Our chosen font */
+}
+
+/* Basic styling for the entire page */
+body {
+    font-family: var(--font-family); /* Apply Poppins font */
+    margin: 0;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6; /* Improve readability */
+}
+
+/* Styling for the top header */
+header {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 15px 0; /* Slightly more padding */
+    text-align: center;
+    box-shadow: 0 2px 8px var(--shadow-light); /* Added shadow for depth */
+}
+
+.logo {
+    font-size: 1.8rem; /* Larger logo text */
+    font-weight: 700; /* Bold */
+    margin-bottom: 10px; /* Space below logo */
+}
+
+/* Styling for the navigation bar inside the header */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 25px; /* More space between links */
+}
+
+nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 600; /* Slightly bolder */
+    padding: 5px 0; /* Padding for click area */
+    position: relative; /* For the underline effect */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+nav a:hover {
+    color: white; /* Slightly brighter white on hover */
+}
+
+/* Underline effect for navigation */
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -3px;
+    left: 0;
+    background-color: white;
+    transition: width 0.3s ease-in-out;
+}
+
+nav a:hover::after,
+nav a.active-nav-link::after {
+    width: 100%; /* Expand underline on hover and for active link */
+}
+
+/* Styling for the main content area */
+main {
+    max-width: 900px; /* Slightly wider main content */
+    margin: 30px auto; /* More vertical space */
+    padding: 25px;
+    background-color: var(--bg-card);
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 4px 15px var(--shadow-light); /* More pronounced shadow */
+}
+
+/* VERY IMPORTANT: Styles for showing/hiding pages */
+.page {
+    display: none;
+    padding: 20px; /* Inner spacing for each page */
+}
+
+.page.active {
+    display: block;
+}
+
+/* Basic styling for headings */
+h1 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px; /* More space below headings */
+    font-weight: 700;
+    font-size: 2.2rem;
+}
+
+h2 {
+    color: var(--primary-dark);
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+h3 {
+    color: var(--text-dark);
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color); /* Subtle separator */
+    padding-bottom: 5px;
+}
+
+h4 {
+    color: var(--text-dark);
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+
+/* Basic button styling */
+.simple-button {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 12px 25px; /* More generous padding */
+    border: none;
+    border-radius: 8px; /* More rounded */
+    cursor: pointer;
+    margin-top: 25px; /* Consistent margin */
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.1rem; /* Slightly larger text */
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle button shadow */
+}
+
+.simple-button:hover {
+    background-color: var(--primary-dark); /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* More pronounced shadow on hover */
+}
+
+.simple-button:active {
+    transform: translateY(0); /* Press down effect */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Basic input field styling */
+#searchInput {
+    width: calc(100% - 22px); /* Full width minus padding/border */
+    padding: 12px; /* More padding */
+    margin-bottom: 15px; /* More space below input */
+    border: 1px solid var(--border-color); /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#searchInput:focus {
+    outline: none; /* Remove default outline */
+    border-color: var(--primary-color); /* Highlight border on focus */
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Subtle glow effect */
+}
+
+/* Report content styling - now acting as a 'card' */
+#reportContent {
+    background-color: var(--bg-light); /* Light background for report box */
+    border: 1px solid var(--border-color);
+    padding: 20px; /* More inner spacing */
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow-light); /* Subtle shadow for the card */
+}
+
+#reportContent p {
+    margin-bottom: 8px; /* Space between paragraphs in report */
+}
+
+/* Specific styling for search message */
+#searchMessage {
+    color: #e74c3c; /* Red for errors */
+    font-weight: 600;
+    text-align: center;
+    margin-top: -10px; /* Pull it closer to the input */
+    margin-bottom: 15px;
+}
+
+/* Styling for lists within report (owners, accidents) */
+#reportContent ul {
+    list-style: none; /* Remove default bullets */
+    padding-left: 0;
+    margin-bottom: 15px;
+}
+
+#reportContent ul li {
+    background-color: #f0f3f5; /* Slightly different background for list items */
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    border-left: 3px solid var(--secondary-color); /* Green accent bar */
+}
+
+/* Profile and Admin Page specific styling */
+#profile-page p,
+#admin-page p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+#profileUsername,
+#profileEmail,
+#adminTotalCars {
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    main {
+        margin: 20px 15px; /* Adjust side margins for smaller screens */
+        padding: 20px;
+    }
+
+    nav ul {
+        flex-wrap: wrap; /* Allow nav links to wrap */
+        gap: 15px;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    nav a {
+        font-size: 0.9rem;
+    }
+    .simple-button {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+    #searchInput {
+        width: calc(100% - 20px); /* Adjust for smaller padding */
+        padding: 10px;
+    }
+}

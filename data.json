@@ -1,0 +1,111 @@
+{
+  "cars": [
+    {
+      "vin": "KDN1234567890ABC",
+      "plate": "KBC 123A",
+      "make": "Toyota",
+      "model": "RAV4",
+      "year": 2018,
+      "priceKES": 3200000,
+      "mileageKM": 75000,
+      "location": "Nairobi",
+      "description": "Well-maintained SUV, single owner. Ideal for family and adventure.",
+      "imageUrls": [
+        "Car images/rav4.ext.jpg",
+        "Car images/rav4.int.jpg"
+      ],
+      "history": {
+        "owners": [
+          {"dateAcquired": "2018-05-10", "type": "First Owner"},
+          {"dateAcquired": "2022-01-15", "type": "Second Owner"}
+        ],
+        "accidents": [
+          {"date": "2020-03-20", "description": "Minor fender bender, repaired at authorized service center. Cosmetic damage only."}
+        ],
+        "pendingFinance": false,
+        "reportedStolen": false
+      }
+    },
+    {
+      "vin": "KEN9876543210EDFG",
+      "plate": "KDA 456B",
+      "make": "Mercedes-Benz",
+      "model": "C200",
+      "year": 2020,
+      "priceKES": 5800000,
+      "mileageKM": 35000,
+      "location": "Mombasa",
+      "description": "Luxury sedan with premium features. Low mileage, executive driven.",
+      "imageUrls": [
+        "https://via.placeholder.com/400x300?text=Merc+Front",
+        "https://via.placeholder.com/400x300?text=Merc+Rear"
+      ],
+      "history": {
+        "owners": [
+          {"dateAcquired": "2020-08-01", "type": "First Owner"}
+        ],
+        "accidents": [], 
+        "pendingFinance": false,
+        "reportedStolen": false
+      }
+    },
+    {
+      "vin": "KDM000111222333XYZ",
+      "plate": "KCC 789C",
+      "make": "Subaru",
+      "model": "Forester",
+      "year": 2016,
+      "priceKES": 2100000,
+      "mileageKM": 120000,
+      "location": "Nakuru",
+      "description": "Reliable AWD, perfect for Kenyan roads. Regularly serviced. Ideal for adventure.",
+      "imageUrls": [
+        "https://via.placeholder.com/400x300?text=Subaru+Front",
+        "https://via.placeholder.com/400x300?text=Subaru+Side"
+      ],
+      "history": {
+        "owners": [
+          {"dateAcquired": "2016-11-01", "type": "First Owner"},
+          {"dateAcquired": "2019-03-01", "type": "Second Owner"}
+        ],
+        "accidents": [],
+        "pendingFinance": true, 
+        "reportedStolen": false
+      }
+    },
+    {
+      "vin": "KDR112233445566ST",
+      "plate": "KCE 500D",
+      "make": "Nissan",
+      "model": "Sunny",
+      "year": 2010,
+      "priceKES": 850000,
+      "mileageKM": 180000,
+      "location": "Kisumu",
+      "description": "Economical city car. Well-used but reliable.",
+      "imageUrls": [
+        "https://via.placeholder.com/400x300?text=Nissan+Sunny"
+      ],
+      "history": {
+        "owners": [
+          {"dateAcquired": "2010-02-01", "type": "First Owner"},
+          {"dateAcquired": "2014-07-20", "type": "Second Owner"},
+          {"dateAcquired": "2020-10-05", "type": "Third Owner"}
+        ],
+        "accidents": [],
+        "pendingFinance": false,
+        "reportedStolen": true 
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": "user123",
+      "username": "AlexNyamai",
+      "email": "alex.nyamai@example.com"
+    }
+  ],
+  "admin": {
+    "totalCars": 4
+  }
+}
