@@ -1,134 +1,168 @@
-// This makes sure our JavaScript code runs ONLY after the entire HTML page is loaded.
-// It prevents errors where JS tries to find an element before it exists.
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. Global Variables (data that needs to be accessed by many functions) ---
+    // ====================================================================
+    // --- IMPORTANT: CONFIGURE YOUR JSON SERVER BASE URL HERE ---
+    // This is the primary place to change your backend server address.
+    // Ensure your JSON Server is running in your terminal like this:
+    // json-server --watch data.json --port 3000
+    //
+    // And ensure your data.json has the following top-level keys:
+    // { "cars": [...], "users": [...], "admin": {...} }
+    // ====================================================================
+    const BASE_URL = "https://project-1-data-base-2.onrender.com"; // This is the default port for JSON Server
 
-    // This will hold all our car, user, and admin data after we load it from data.json.
-    let appData = {};
+    // Global object to hold all our fetched data (cars, users, admin)
+    // Initialize with empty structures to prevent errors before data loads.
+    let appData = {
+        cars: [],
+        users: [],
+        admin: null // Initialize admin as null or empty object if it might not always exist
+    };
 
-    // This simulates a "logged-in" user. We'll set it once data loads.
+    // This simulates a "logged-in" user. We'll set it once user data loads.
     let currentUser = null;
 
     // --- 2. Get References to HTML Elements (so JS can interact with them) ---
-
-    // Get ALL elements that have the 'page' class (these are our different content sections).
+    // Select all elements that have the 'page' class. These are our main content sections.
     const allPages = document.querySelectorAll('.page');
 
-    // Get ALL navigation links in the header.
-    // We look for 'a' tags inside 'nav ul li'.
+    // Select all navigation links in the header.
     const navLinks = document.querySelectorAll('nav ul li a');
 
     // Get the "Start Search" button on the landing page.
-    const startSearchButton = document.querySelector('button[data-page="search-page"]');
+    const startSearchButton = document.querySelector('button[data-page="search-page"][class="cta-button"]');
 
-    // Get the search input field and button on the Search Page.
+    // Get the search input field, search button, and message area on the Search Page.
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
-    const searchMessage = document.getElementById('searchMessage'); // For displaying search errors/info
+    const searchMessage = document.getElementById('searchMessage');
 
     // Get the area where the car report will be displayed.
     const reportContent = document.getElementById('reportContent');
 
     // Get the "Back to Search" button on the Report Page.
-    const backToSearchButton = document.querySelector('button[data-page="search-page"][class="simple-button"]');
+    const backToSearchButton = document.querySelector('.back-button');
 
     // Get elements for the User Profile Page.
     const profileUsername = document.getElementById('profileUsername');
     const profileEmail = document.getElementById('profileEmail');
+    const searchHistoryList = document.getElementById('searchHistoryList');
 
-    // Get element for the Admin Page.
+    // Get elements for the Admin Page.
     const adminTotalCars = document.getElementById('adminTotalCars');
+    const adminActiveUsers = document.getElementById('adminActiveUsers'); // Will show N/A if not in data.json
 
 
     // --- 3. Core Functions (actions our app can perform) ---
 
-    // Function to load our dummy data from the 'data.json' file.
-    // 'async' means this function will do something that takes time (like fetching a file).
+    // Function to load all necessary data from the JSON Server API.
     async function loadData() {
         try {
-            // 'fetch' sends a request to get the 'data.json' file.
-            // 'await' pauses this function until the file is completely loaded.
-            const response = await fetch('data.json');
+            // Use Promise.all to fetch data from all endpoints concurrently.
+            // This makes the initial load faster as requests happen in parallel.
+            const [carsResponse, usersResponse, adminResponse] = await Promise.all([
+                fetch(`${BASE_URL}/cars`),  // Fetches car listings from JSON Server's /cars endpoint
+                fetch(`${BASE_URL}/users`), // Fetches user data from /users endpoint
+                fetch(`${BASE_URL}/admin`)  // Fetches admin statistics from /admin endpoint
+            ]);
 
-            // If the response is not ok (e.g., file not found, 404 error), throw an error.
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+            // Check if all responses were successful (HTTP status 200-299).
+            if (!carsResponse.ok) {
+                throw new Error(`HTTP error fetching cars! Status: ${carsResponse.status}`);
+            }
+            if (!usersResponse.ok) {
+                throw new Error(`HTTP error fetching users! Status: ${usersResponse.status}`);
+            }
+            if (!adminResponse.ok) {
+                throw new Error(`HTTP error fetching admin! Status: ${adminResponse.status}`);
             }
 
-            // 'await response.json()' parses the loaded data into a JavaScript object.
-            appData = await response.json();
-            console.log('Data loaded successfully:', appData); // Log to console to confirm
+            // Parse the JSON data from each successful response.
+            appData.cars = await carsResponse.json();
+            appData.users = await usersResponse.json();
+            appData.admin = await adminResponse.json();
 
-            // Simulate a user being "logged in" by picking the first user from our data.
+            console.log('Data loaded successfully:', appData);
+
+            // Simulate user login: Set the current user to the first user in our fetched data.
+            // This is for demonstration purposes for the profile page.
             if (appData.users && appData.users.length > 0) {
                 currentUser = appData.users[0];
+            } else {
+                console.warn('No user data found in data.json. Profile page may be empty.');
             }
 
-            // After data is loaded, show the initial landing page.
+            // After all data is loaded, display the initial landing page.
             showPage('landing-page');
 
         } catch (error) {
-            // If anything goes wrong during data loading, log an error.
-            console.error('Failed to load data:', error);
-            alert('App data could not be loaded. Check data.json and your server setup (e.g., Live Server).');
+            // Log the error and display a user-friendly alert if data loading fails.
+            // This helps in debugging network or JSON Server issues.
+            console.error('Failed to load data from JSON Server:', error);
+            alert(`App data could not be loaded. Please ensure your JSON Server is running correctly at ${BASE_URL} and your data.json file is properly structured (check 'cars', 'users', 'admin' keys). Error: ${error.message}`);
         }
     }
 
-    // Function to show only one specific "page" and hide all others.
-    // 'pageId' is the ID of the HTML div (e.g., 'landing-page', 'search-page').
+    // Function to control which "page" (section) is visible.
+    // It hides all pages first, then displays the specified page.
     function showPage(pageId) {
-        // Loop through every element that has the 'page' class.
+        // Hide all pages by removing the 'active' class.
         allPages.forEach(page => {
-            // Remove the 'active' class from each page. This hides them all.
             page.classList.remove('active');
         });
 
-        // Find the specific page we want to show using its ID.
+        // Find the specific page to show using its ID.
         const targetPage = document.getElementById(pageId);
 
-        // IMPORTANT: Check if the page actually exists before trying to use it.
-        // This prevents the "Cannot read properties of null" error if an ID is wrong.
+        // If the target page exists, add the 'active' class to make it visible.
         if (targetPage) {
-            // Add the 'active' class to the target page. This makes it visible.
             targetPage.classList.add('active');
 
-            // --- Additional actions based on the page being shown ---
+            // Perform additional actions specific to the page being shown.
             if (pageId === 'profile-page') {
-                renderUserProfile(); // If it's the profile page, update its content.
+                renderUserProfile(); // Update profile details
             } else if (pageId === 'admin-page') {
-                renderAdminPanel(); // If it's the admin page, update its content.
-            } else if (pageId === 'report-page') {
-                // If we're going to the report page, clear any old messages
-                // unless a search just filled it.
-                if (reportContent.innerHTML.includes('<p>Search for a car')) {
-                    reportContent.innerHTML = '<p>Search for a car to see its basic report here.</p>';
-                }
+                renderAdminPanel(); // Update admin stats
+            } else if (pageId === 'search-page') {
+                // When navigating back to the search page, reset the report area and hide the back button.
+                reportContent.innerHTML = '<p>Search for a car to see its basic report here.</p>';
+                searchMessage.textContent = ''; // Clear any search messages too
+                backToSearchButton.style.display = 'none'; // Hide the back button
+                searchInput.value = ''; // Clear the search input field
             }
+            // The 'report-page' is NOT a separate section, it's part of 'search-page'.
+            // So we don't call showPage for it.
+            // The back button is managed directly when search results are displayed.
 
         } else {
+            // Log an error if a page with the specified ID is not found in the HTML.
             console.error(`Error: Page with ID "${pageId}" not found in HTML.`);
         }
 
-        // Optional: Update navigation link active state (visual feedback)
+        // Update the visual active state for navigation links in the header.
         navLinks.forEach(link => {
-            // Check if the link's data-page attribute matches the currently active pageId
             if (link.dataset.page === pageId) {
-                link.classList.add('active-nav-link'); // Add a class for styling active nav links
+                link.classList.add('active-nav-link');
             } else {
                 link.classList.remove('active-nav-link');
             }
         });
     }
 
-    // Function to display the car report.
+    // Function to display the detailed car report in the 'reportContent' area.
     function renderCarReport(car) {
+        // Ensure the search page is active before rendering the report (it should be).
+        showPage('search-page'); // Re-activate search page just in case navigation occurred.
+
+        // If no car object is provided (e.g., search found nothing), display a "not found" message.
         if (!car) {
-            reportContent.innerHTML = '<p>No car found with that VIN or Plate.</p>';
+            reportContent.innerHTML = '<p>No car found with that VIN or Plate. Please try again.</p>';
+            searchMessage.textContent = 'Car not found.';
+            backToSearchButton.style.display = 'block'; // Show back button even if car not found, to clear the message
             return;
         }
 
-        // Initialize history details HTML
+        // Generate HTML for the car's owners history.
         let ownersHtml = '';
         if (car.history && car.history.owners && car.history.owners.length > 0) {
             ownersHtml = '<h4>Owners:</h4><ul>';
@@ -140,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ownersHtml = '<p>No owner history available.</p>';
         }
 
+        // Generate HTML for the car's accident history.
         let accidentsHtml = '';
         if (car.history && car.history.accidents && car.history.accidents.length > 0) {
             accidentsHtml = '<h4>Accidents:</h4><ul>';
@@ -151,95 +186,148 @@ document.addEventListener('DOMContentLoaded', () => {
             accidentsHtml = '<p>No accident records.</p>';
         }
 
+        // Determine "Yes" or "No" status for pending finance and reported stolen.
         const pendingFinanceStatus = car.history && car.history.pendingFinance ? 'Yes' : 'No';
         const reportedStolenStatus = car.history && car.history.reportedStolen ? 'Yes' : 'No';
 
-        // Use template literals (backticks ``) to easily write multi-line HTML.
+        // --- Handle Image Display ---
+        // Uses the first image URL from the 'imageUrls' array, or a placeholder if none exist.
+        const carImage = car.imageUrls && car.imageUrls.length > 0 ? car.imageUrls[0] : 'https://via.placeholder.com/400x300?text=No+Image';
+        const imageHtml = `<img src="${carImage}" alt="${car.make} ${car.model}" class="car-report-image">`;
+
+
+        // Populate the 'reportContent' area using a template literal for easy HTML generation.
         reportContent.innerHTML = `
             <h2>${car.make} ${car.model} (${car.year})</h2>
+            ${imageHtml}
             <p><strong>VIN:</strong> ${car.vin}</p>
             <p><strong>Plate:</strong> ${car.plate}</p>
             <p><strong>Price:</strong> KES ${car.priceKES.toLocaleString()}</p>
             <p><strong>Mileage:</strong> ${car.mileageKM.toLocaleString()} KM</p>
+            <p><strong>Location:</strong> ${car.location}</p>
             <p><strong>Description:</strong> ${car.description}</p>
-            
+
             <h3>Vehicle History</h3>
             ${ownersHtml}
             ${accidentsHtml}
             <p><strong>Pending Finance:</strong> ${pendingFinanceStatus}</p>
             <p><strong>Reported Stolen:</strong> ${reportedStolenStatus}</p>
         `;
-        showPage('report-page'); // Show the report page after rendering content.
+
+        backToSearchButton.style.display = 'block'; // Show the "Back to Search" button after a report is displayed
+        // IMPORTANT: We do NOT call showPage('report-page') here because 'reportContent' is already
+        // part of the 'search-page'.
     }
 
-    // Function to display user profile data.
+    // Function to display user profile data dynamically.
     function renderUserProfile() {
         if (currentUser) {
-            profileUsername.textContent = currentUser.username; // Set the username text.
-            profileEmail.textContent = currentUser.email;      // Set the email text.
+            profileUsername.textContent = currentUser.username;
+            profileEmail.textContent = currentUser.email;
+
+            // Render simulated search history.
+            if (currentUser.searchHistory && currentUser.searchHistory.length > 0) {
+                // Ensure date formatting is consistent. 'en-US' locale gives MM/DD/YYYY
+                searchHistoryList.innerHTML = currentUser.searchHistory
+                    .map(item => `<li>Searched for: ${item.query} on ${new Date(item.date).toLocaleDateString('en-US')}</li>`)
+                    .join('');
+            } else {
+                searchHistoryList.innerHTML = '<li>No recent searches.</li>';
+            }
         } else {
-            profileUsername.textContent = 'Guest'; // If no user, show 'Guest'.
+            profileUsername.textContent = 'Guest';
             profileEmail.textContent = 'N/A';
+            searchHistoryList.innerHTML = '<li>User not logged in.</li>';
         }
     }
 
-    // Function to display admin data.
+    // Function to display admin panel data dynamically.
     function renderAdminPanel() {
         if (appData.admin) {
-            adminTotalCars.textContent = appData.admin.totalCars; // Set total cars text.
+            adminTotalCars.textContent = appData.admin.totalCars;
+            // The 'activeUsers' field might not be in data.json's admin object, so provide fallback.
+            adminActiveUsers.textContent = appData.admin.activeUsers !== undefined ? appData.admin.activeUsers : 'N/A';
         } else {
             adminTotalCars.textContent = 'N/A';
+            adminActiveUsers.textContent = 'N/A';
         }
     }
+
 
     // --- 4. Event Listeners (making our buttons/links clickable) ---
 
-    // Listen for clicks on ALL navigation links.
+    // Event listener for all navigation links to switch active pages.
     navLinks.forEach(link => {
         link.addEventListener('click', (event) => {
-            event.preventDefault(); // Stop the browser from going to a new URL.
-            // Get the 'data-page' value from the clicked link and show that page.
+            event.preventDefault();
             showPage(event.target.dataset.page);
         });
     });
 
-    // Listen for a click on the "Start Search" button on the landing page.
+    // Event listener for the "Start Search" button on the landing page.
     startSearchButton.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent default button action (though not strictly needed here).
-        // Show the search page.
+        event.preventDefault();
         showPage('search-page');
     });
 
-    // Listen for a click on the "Back to Search" button on the report page.
+    // Event listener for the "Back to Search" button on the report page.
     backToSearchButton.addEventListener('click', (event) => {
         event.preventDefault();
-        showPage('search-page'); // Show the search page.
+        // When clicking back, reset the search page state
+        reportContent.innerHTML = '<p>Search for a car to see its basic report here.</p>'; // Clear the report
+        searchMessage.textContent = ''; // Clear any search messages
+        backToSearchButton.style.display = 'none'; // Hide the back button
+        searchInput.value = ''; // Clear the search input
+        showPage('search-page'); // Explicitly ensure we are on the search page
     });
 
 
-    // Listen for a click on the "Search Car" button.
+    // Event listener for the main "Search Car" button.
     searchButton.addEventListener('click', () => {
-        const query = searchInput.value.trim(); // Get text from input, remove spaces.
+        const query = searchInput.value.trim(); // Get and trim the search input.
         searchMessage.textContent = ''; // Clear previous messages.
 
         if (query === '') {
             searchMessage.textContent = 'Please enter a VIN or Plate.';
-            return; // Stop here if input is empty.
+            reportContent.innerHTML = '<p>Search for a car to see its basic report here.</p>';
+            backToSearchButton.style.display = 'none'; // No need for back button if nothing was searched
+            return;
         }
 
-        // Try to find a car that matches the VIN OR the Plate.
-        // '.find()' returns the first car object that matches.
+        // Search for a car within the loaded `appData.cars` array.
+        // It matches either VIN or Plate number (case-insensitive).
         const foundCar = appData.cars.find(car =>
             car.vin.toLowerCase() === query.toLowerCase() ||
             car.plate.toLowerCase() === query.toLowerCase()
         );
 
-        renderCarReport(foundCar); // Display the report for the found car (or 'not found' message).
+        // Render the report based on the search result.
+        renderCarReport(foundCar);
+
+        // Optional: Update user's search history (simulated, this doesn't update JSON Server)
+        if (currentUser && foundCar) {
+            if (!currentUser.searchHistory) {
+                currentUser.searchHistory = [];
+            }
+            // Check if this search query is already in history to avoid duplicates
+            const existingSearch = currentUser.searchHistory.find(s => s.query.toLowerCase() === query.toLowerCase());
+            if (!existingSearch) {
+                // Add new search to the beginning of the history
+                currentUser.searchHistory.unshift({ query: query, date: new Date().toISOString() });
+                // Keep history limited to a certain number of items (e.g., 5)
+                if (currentUser.searchHistory.length > 5) {
+                    currentUser.searchHistory.pop(); // Remove the oldest entry
+                }
+            }
+        }
     });
 
     // --- 5. Initialization (what runs when the script first loads) ---
 
-    // Start everything by loading our data.
+    // Set the current year dynamically in the footer.
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Begin the application by loading data from the JSON Server.
     loadData();
 
-}); // End of DOMContentLoaded
+}); // End of DOMContentLoaded event listener

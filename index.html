@@ -3,58 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gari360 Simple</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Gari 360 - Your Trusted Car Information Platform</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <header>
-        <nav>
-            <div class="logo">Gari360</div>
-            <ul>
-                <li><a href="#" data-page="landing-page">Home</a></li>
-                <li><a href="#" data-page="search-page">Search</a></li>
-                <li><a href="#" data-page="profile-page">Profile</a></li>
-                <li><a href="#" data-page="admin-page">Admin</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <h1>Gari 360</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" data-page="landing-page" class="active-nav-link">Home</a></li>
+                    <li><a href="#" data-page="search-page">Search Car</a></li>
+                    <li><a href="#" data-page="profile-page">My Profile</a></li>
+                    <li><a href="#" data-page="admin-page">Admin Panel</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <div id="landing-page" class="page active">
-            <h1>Welcome to Gari360!</h1>
-            <p>Get simple car info quickly.</p>
-            <button class="simple-button" data-page="search-page">Start Search</button>
-        </div>
+    <main class="container">
+        <section id="landing-page" class="page active">
+            <h2>Welcome to Gari 360</h2>
+            <p>Your ultimate platform for transparent and detailed used car information in Kenya. Say goodbye to hidden issues and make informed decisions.</p>
+            <p>Search for cars by VIN or Plate number to get a comprehensive report.</p>
+            <button data-page="search-page" class="cta-button">Start Your Search Now</button>
+        </section>
 
-        <div id="search-page" class="page">
-            <h1>Search for a Car</h1>
-            <input type="text" id="searchInput" placeholder="Enter VIN or Plate (e.g., KBC 123A)">
-            <button id="searchButton" class="simple-button">Search Car</button>
-            <p id="searchMessage" style="color: red;"></p> </div>
+        <section id="search-page" class="page">
+            <h2>Search for a Car</h2>
+            <div class="search-section">
+                <input type="text" id="searchInput" placeholder="Enter VIN or Plate Number (e.g., KBC 123A)">
+                <button id="searchButton" class="simple-button">Search Car</button>
+            </div>
+            <p id="searchMessage" class="message-text"></p>
 
-        <div id="report-page" class="page">
-            <h1>Car Report</h1>
-            <div id="reportContent">
+            <div id="reportContent" class="report-area">
                 <p>Search for a car to see its basic report here.</p>
             </div>
-            <button class="simple-button" data-page="search-page">Back to Search</button>
-        </div>
+            <button class="simple-button back-button">Back to Search</button>
+        </section>
 
-        <div id="profile-page" class="page">
-            <h1>User Profile</h1>
-            <p>Username: <span id="profileUsername"></span></p>
-            <p>Email: <span id="profileEmail"></span></p>
-        </div>
+        <section id="profile-page" class="page">
+            <h2>My Profile</h2>
+            <div class="profile-details">
+                <p><strong>Username:</strong> <span id="profileUsername">Loading...</span></p>
+                <p><strong>Email:</strong> <span id="profileEmail">Loading...</span></p>
+                <div class="profile-section">
+                    <h3>Search History (Simulated)</h3>
+                    <ul id="searchHistoryList">
+                        <li>No recent searches.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-        <div id="admin-page" class="page">
-            <h1>Admin Panel</h1>
-            <p>Total Cars in Database: <span id="adminTotalCars"></span></p>
-        </div>
+        <section id="admin-page" class="page">
+            <h2>Admin Control Panel</h2>
+            <div class="admin-stats">
+                <p><strong>Total Cars Listed:</strong> <span id="adminTotalCars">Loading...</span></p>
+                <p><strong>Active Users:</strong> <span id="adminActiveUsers">Loading...</span></p>
+                <div class="admin-section">
+                    <h3>Vehicle Management (Mock)</h3>
+                    <p>This area would contain tools for adding, editing, or deleting vehicle listings.</p>
+                    <button class="simple-button">Add New Car (Mock)</button>
+                    <button class="simple-button">Manage Users (Mock)</button>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <script src="script.js"></script>
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> Gari 360. All rights reserved.</p>
+        </div>
+    </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

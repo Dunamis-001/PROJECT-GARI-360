@@ -1,266 +1,260 @@
-/* Sets up variables for easy color changes later. */
+/* Basic Resets & Body Styles */
 :root {
-    --primary-color: #3498db; /* A slightly softer blue */
-    --primary-dark: #2980b9; /* Darker blue for hover/active states */
-    --secondary-color: #2ecc71; /* Green for accents, e.g., success messages */
-    --text-dark: #34495e; /* Darker grey-blue for main text */
-    --text-light: #ecf0f1; /* Light grey for text on dark backgrounds */
-    --bg-light: #f8f9fa; /* Very light grey background */
-    --bg-card: #ffffff; /* White for card backgrounds */
-    --border-color: #e0e0e0; /* Light border color */
-    --shadow-light: rgba(0, 0, 0, 0.08); /* Subtle shadow */
-    --font-family: 'Poppins', sans-serif; /* Our chosen font */
+    --primary-color: #0056b3; /* A nice blue */
+    --secondary-color: #007bff; /* Lighter blue */
+    --accent-color: #28a745; /* Green for success/CTA */
+    --text-color: #333;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --border-color: #dee2e6;
+    --hover-color: #004085;
 }
 
-/* Basic styling for the entire page */
 body {
-    font-family: var(--font-family); /* Apply Poppins font */
+    font-family: Arial, sans-serif;
     margin: 0;
-    background-color: var(--bg-light);
-    color: var(--text-dark);
-    line-height: 1.6; /* Improve readability */
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-/* Styling for the top header */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header & Navigation */
 header {
     background-color: var(--primary-color);
-    color: var(--text-light);
-    padding: 15px 0; /* Slightly more padding */
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+header h1 {
+    margin: 0;
     text-align: center;
-    box-shadow: 0 2px 8px var(--shadow-light); /* Added shadow for depth */
+    color: white;
 }
 
-.logo {
-    font-size: 1.8rem; /* Larger logo text */
-    font-weight: 700; /* Bold */
-    margin-bottom: 10px; /* Space below logo */
-}
-
-/* Styling for the navigation bar inside the header */
 nav ul {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 10px 0 0 0;
     display: flex;
     justify-content: center;
-    gap: 25px; /* More space between links */
+    gap: 20px;
 }
 
-nav a {
-    color: var(--text-light);
+nav ul li a {
+    color: white;
     text-decoration: none;
-    font-weight: 600; /* Slightly bolder */
-    padding: 5px 0; /* Padding for click area */
-    position: relative; /* For the underline effect */
-    transition: color 0.3s ease; /* Smooth color transition */
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-nav a:hover {
-    color: white; /* Slightly brighter white on hover */
+nav ul li a:hover {
+    background-color: var(--hover-color);
 }
 
-/* Underline effect for navigation */
-nav a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -3px;
-    left: 0;
-    background-color: white;
-    transition: width 0.3s ease-in-out;
+nav ul li a.active-nav-link {
+    background-color: var(--secondary-color);
+    font-weight: bold;
 }
 
-nav a:hover::after,
-nav a.active-nav-link::after {
-    width: 100%; /* Expand underline on hover and for active link */
-}
-
-/* Styling for the main content area */
+/* Main Content Area */
 main {
-    max-width: 900px; /* Slightly wider main content */
-    margin: 30px auto; /* More vertical space */
-    padding: 25px;
-    background-color: var(--bg-card);
-    border-radius: 12px; /* More rounded corners */
-    box-shadow: 0 4px 15px var(--shadow-light); /* More pronounced shadow */
+    flex-grow: 1; /* Allows main content to take up available space */
+    padding-top: 30px;
+    padding-bottom: 50px;
 }
 
-/* VERY IMPORTANT: Styles for showing/hiding pages */
+/* Page Management */
 .page {
-    display: none;
-    padding: 20px; /* Inner spacing for each page */
+    display: none; /* Hide all pages by default */
+    background-color: var(--card-background);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
 
 .page.active {
-    display: block;
+    display: block; /* Show the active page */
 }
 
-/* Basic styling for headings */
-h1 {
-    color: var(--primary-color);
-    text-align: center;
-    margin-bottom: 30px; /* More space below headings */
-    font-weight: 700;
-    font-size: 2.2rem;
-}
-
+/* Headings */
 h2 {
-    color: var(--primary-dark);
-    margin-top: 25px;
-    margin-bottom: 15px;
-    font-weight: 600;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 h3 {
-    color: var(--text-dark);
-    margin-top: 20px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid var(--border-color); /* Subtle separator */
-    padding-bottom: 5px;
+    color: var(--secondary-color);
+    margin-top: 25px;
+    margin-bottom: 15px;
 }
 
-h4 {
-    color: var(--text-dark);
-    margin-top: 15px;
-    margin-bottom: 8px;
-}
-
-
-/* Basic button styling */
-.simple-button {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    padding: 12px 25px; /* More generous padding */
+/* Buttons */
+.cta-button {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 12px 25px;
     border: none;
-    border-radius: 8px; /* More rounded */
+    border-radius: 5px;
+    font-size: 1.1em;
     cursor: pointer;
-    margin-top: 25px; /* Consistent margin */
-    display: block;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1.1rem; /* Slightly larger text */
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle button shadow */
+    transition: background-color 0.3s ease;
+    display: block; /* Make it a block element */
+    width: fit-content; /* Fit content width */
+    margin: 30px auto 0; /* Center it */
+}
+
+.cta-button:hover {
+    background-color: #218838; /* Darker green */
+}
+
+.simple-button {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Space between buttons */
 }
 
 .simple-button:hover {
-    background-color: var(--primary-dark); /* Darker blue on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* More pronounced shadow on hover */
+    background-color: var(--hover-color);
 }
 
-.simple-button:active {
-    transform: translateY(0); /* Press down effect */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-/* Basic input field styling */
-#searchInput {
-    width: calc(100% - 22px); /* Full width minus padding/border */
-    padding: 12px; /* More padding */
-    margin-bottom: 15px; /* More space below input */
-    border: 1px solid var(--border-color); /* Light border */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#searchInput:focus {
-    outline: none; /* Remove default outline */
-    border-color: var(--primary-color); /* Highlight border on focus */
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Subtle glow effect */
-}
-
-/* Report content styling - now acting as a 'card' */
-#reportContent {
-    background-color: var(--bg-light); /* Light background for report box */
-    border: 1px solid var(--border-color);
-    padding: 20px; /* More inner spacing */
+/* Search Section Specifics */
+.search-section {
+    display: flex;
+    gap: 10px;
     margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px var(--shadow-light); /* Subtle shadow for the card */
 }
 
-#reportContent p {
-    margin-bottom: 8px; /* Space between paragraphs in report */
-}
-
-/* Specific styling for search message */
-#searchMessage {
-    color: #e74c3c; /* Red for errors */
-    font-weight: 600;
-    text-align: center;
-    margin-top: -10px; /* Pull it closer to the input */
-    margin-bottom: 15px;
-}
-
-/* Styling for lists within report (owners, accidents) */
-#reportContent ul {
-    list-style: none; /* Remove default bullets */
-    padding-left: 0;
-    margin-bottom: 15px;
-}
-
-#reportContent ul li {
-    background-color: #f0f3f5; /* Slightly different background for list items */
-    padding: 8px 12px;
+#searchInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    margin-bottom: 5px;
-    border-left: 3px solid var(--secondary-color); /* Green accent bar */
+    font-size: 1em;
 }
 
-/* Profile and Admin Page specific styling */
-#profile-page p,
-#admin-page p {
-    font-size: 1.1rem;
+.message-text {
+    color: #dc3545; /* Red for error messages */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.report-area {
+    background-color: #f0f0f0;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    min-height: 150px; /* Ensure it has some height even if empty */
+}
+
+.report-area h2, .report-area h3 {
+    margin-top: 0;
+    border-bottom: none;
+}
+
+.report-area p {
+    margin-bottom: 8px;
+}
+
+.report-area ul {
+    list-style: disc inside;
+    padding-left: 20px;
+}
+
+.report-area ul li {
+    margin-bottom: 5px;
+}
+
+.car-report-image {
+    max-width: 100%; /* Ensure image fits container */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra space below image */
+    margin: 15px 0; /* Add some margin around the image */
+    border-radius: 5px;
+}
+
+.back-button {
+    margin-top: 20px;
+    display: none; /* Hidden by default, shown by JS when report is displayed */
+}
+
+
+/* Profile & Admin Page Specifics */
+.profile-details, .admin-stats {
+    background-color: #f9f9f9;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.profile-details p, .admin-stats p {
     margin-bottom: 10px;
 }
 
-#profileUsername,
-#profileEmail,
-#adminTotalCars {
-    font-weight: 600;
-    color: var(--primary-dark);
+.profile-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-details ul li {
+    background-color: #e9ecef;
+    padding: 8px 15px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.profile-section, .admin-section {
+    margin-top: 30px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+/* Footer */
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: auto; /* Pushes footer to the bottom */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    main {
-        margin: 20px 15px; /* Adjust side margins for smaller screens */
-        padding: 20px;
-    }
-
     nav ul {
-        flex-wrap: wrap; /* Allow nav links to wrap */
-        gap: 15px;
+        flex-direction: column;
+        gap: 10px;
     }
-
-    .logo {
-        font-size: 1.6rem;
+    nav ul li a {
+        display: block;
+        text-align: center;
     }
-
-    h1 {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.5rem;
-    }
-    nav a {
-        font-size: 0.9rem;
+    .search-section {
+        flex-direction: column;
     }
     .simple-button {
-        font-size: 1rem;
-        padding: 10px 20px;
-    }
-    #searchInput {
-        width: calc(100% - 20px); /* Adjust for smaller padding */
-        padding: 10px;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
     }
 }

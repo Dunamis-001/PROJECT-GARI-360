@@ -1,6 +1,7 @@
 {
   "cars": [
     {
+      "id": "car1",
       "vin": "KDN1234567890ABC",
       "plate": "KBC 123A",
       "make": "Toyota",
@@ -27,6 +28,7 @@
       }
     },
     {
+      "id": "car2",
       "vin": "KEN9876543210EDFG",
       "plate": "KDA 456B",
       "make": "Mercedes-Benz",
@@ -44,12 +46,13 @@
         "owners": [
           {"dateAcquired": "2020-08-01", "type": "First Owner"}
         ],
-        "accidents": [], 
+        "accidents": [],
         "pendingFinance": false,
         "reportedStolen": false
       }
     },
     {
+      "id": "car3",
       "vin": "KDM000111222333XYZ",
       "plate": "KCC 789C",
       "make": "Subaru",
@@ -69,11 +72,12 @@
           {"dateAcquired": "2019-03-01", "type": "Second Owner"}
         ],
         "accidents": [],
-        "pendingFinance": true, 
+        "pendingFinance": true,
         "reportedStolen": false
       }
     },
     {
+      "id": "car4",
       "vin": "KDR112233445566ST",
       "plate": "KCE 500D",
       "make": "Nissan",
@@ -94,7 +98,7 @@
         ],
         "accidents": [],
         "pendingFinance": false,
-        "reportedStolen": true 
+        "reportedStolen": true
       }
     }
   ],
@@ -102,10 +106,12 @@
     {
       "id": "user123",
       "username": "AlexNyamai",
-      "email": "alex.nyamai@example.com"
+      "email": "alex.nyamai@example.com",
+      "searchHistory": []
     }
   ],
   "admin": {
-    "totalCars": 4
+    "totalCars": 4,
+    "activeUsers": 1
   }
 }
