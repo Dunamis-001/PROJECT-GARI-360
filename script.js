@@ -1,14 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ====================================================================
-    // --- IMPORTANT: CONFIGURE YOUR JSON SERVER BASE URL HERE ---
-    // This is the primary place to change your backend server address.
-    // Ensure your JSON Server is running in your terminal like this:
-    // json-server --watch data.json --port 3000
-    //
-    // And ensure your data.json has the following top-level keys:
-    // { "cars": [...], "users": [...], "admin": {...} }
-    // ====================================================================
+   
     const BASE_URL = "https://project-1-data-base-2.onrender.com"; // This is the default port for JSON Server
 
     // Global object to hold all our fetched data (cars, users, admin)
